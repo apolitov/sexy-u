@@ -232,7 +232,7 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
     <div class="pad">
       <div class="kicker reveal">Зачем меняем</div>
       <h2 class="title reveal">Команду <span class="c">рвут на части</span></h2>
-      <p class="lead reveal">Высокий TTM, расфокус, выгорание. Аналитика не ревьюется, где-то избыточна, но в ней пропущены пользовательские сценарии.</p>
+      <p class="lead reveal">Высокий TTM, расфокус, выгорание. Аналитику никто не ревьюет: где-то избыточна (лишние схемы БД), где-то пропущены пользовательские сценарии.</p>
       <div class="grid3" style="margin-top:42px">
         <div class="card reveal d-a"><span class="tagcard"></span><div class="ico">// TTM</div><h3>Высокий TTM</h3><p>Задачи долго идут до клиента, релизы расползаются по спринтам.</p></div>
         <div class="card reveal d-b"><span class="tagcard"></span><div class="ico">// FOCUS</div><h3>Расфокус и выгорание</h3><p>Людей дёргают на сторонние задачи внутри спринта. Нет предсказуемого ритма.</p></div>
@@ -278,7 +278,7 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
           <ul class="ulist" style="margin-top:14px">
             <li>1 BE + 1–2 FE + 1 QA + 0.5 SA.</li>
             <li>Рефакторинг, поддержка, баги, мелкие доработки.</li>
-            <li><b>Бережёт develop от текучки.</b></li>
+            <li><b>Держит текучку в стороне от develop.</b></li>
           </ul>
         </div>
       </div>
@@ -292,7 +292,7 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
     <div class="pad">
       <div class="kicker reveal">Капасити</div>
       <h2 class="title reveal"><span class="c">65 SP</span> на человека в спринт</h2>
-      <p class="lead reveal">Фактически часы по Фибоначчи на 2 недели.</p>
+      <p class="lead reveal">Часы по шкале Фибоначчи за 2 недели.</p>
       <div class="grid2" style="margin-top:40px;align-items:start">
         <div class="card reveal d-a">
           <div class="ico" style="color:var(--cyan)">// DEVELOP V-TEAM</div>
@@ -305,7 +305,7 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
             <span class="chip cy" style="font-size:22px;padding:10px 18px">40 SP · рефакторинг</span>
             <span class="chip am" style="font-size:22px;padding:10px 18px">25 SP · поддержка/баги</span>
           </div>
-          <p>Лимит поддержки <b style="color:var(--text)">25 SP жёсткий</b>. Превышение — эскалация на CPO/CTO: сигнал нанимать или менять архитектуру.</p>
+          <p>Лимит поддержки — <b style="color:var(--text)">25 SP, без исключений</b>. Превышение — эскалация на CPO/CTO: сигнал нанимать или менять архитектуру.</p>
         </div>
       </div>
     </div>
@@ -511,9 +511,9 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
       <table class="t2 reveal d-a">
         <thead><tr><th>Боль сейчас</th><th>Закрываем чем</th></tr></thead>
         <tbody>
-          <tr><td class="pain">Высокий TTM</td><td class="fix"><b>V-TEAM</b> фокусится на одной задаче и доводит до релиза</td></tr>
-          <tr><td class="pain">Расфокус</td><td class="fix">V-TEAM <b>неприкасаема</b>, прерывания только P0 / P1</td></tr>
-          <tr><td class="pain">Аналитики нет / плохая</td><td class="fix"><b>DoR-гейт</b> блокирует вход без аналитики</td></tr>
+          <tr><td class="pain">Высокий TTM</td><td class="fix"><b>V-TEAM</b> ведёт одну задачу и доводит до релиза</td></tr>
+          <tr><td class="pain">Расфокус</td><td class="fix">V-TEAM <b>неприкасаема</b>, прерывают только P0 / P1</td></tr>
+          <tr><td class="pain">Аналитики нет или слабая</td><td class="fix"><b>DoR-гейт</b> блокирует вход без аналитики</td></tr>
           <tr><td class="pain">Выгорание</td><td class="fix"><b>Ротация</b> раз в 3 спринта + предсказуемый ритм</td></tr>
           <tr><td class="pain">Сложно эксплуатировать</td><td class="fix">Тестлид в гейте + <b>DoD от QA</b> + run-команда</td></tr>
         </tbody>
