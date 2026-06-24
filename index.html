@@ -292,7 +292,7 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
     <div class="pad">
       <div class="kicker reveal">Капасити</div>
       <h2 class="title reveal"><span class="c">65 SP</span> на человека в спринт</h2>
-      <p class="lead reveal">Часы по шкале Фибоначчи за 2 недели.</p>
+      <p class="lead reveal">SP — не story point. Это оценка задачи в часах, округлённая вверх до ближайшего числа Фибоначчи: 1 · 2 · 3 · 5 · 8 · 13 · 21 · 34…</p>
       <div class="grid2" style="margin-top:40px;align-items:start">
         <div class="card reveal d-a">
           <div class="ico" style="color:var(--cyan)">// DEVELOP V-TEAM</div>
@@ -307,6 +307,9 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
           </div>
           <p>Лимит поддержки — <b style="color:var(--text)">25 SP, без исключений</b>. Превышение — эскалация на CPO/CTO: сигнал нанимать или менять архитектуру.</p>
         </div>
+      </div>
+      <div class="card reveal d-c" style="margin-top:24px;padding:20px 32px;border-color:#2a4a44">
+        <p style="font-size:22px"><b style="color:var(--cyan)">Горизонт — квартал:</b> Q3 = 6 спринтов, минус ~1 на отпуска = 5 рабочих. На человека это 5 × 65 = <b style="color:var(--text)">325 SP за квартал</b>. В этот объём Q3-бэклог укладывается с запасом.</p>
       </div>
     </div>
     <div class="brandfoot">платформа · процесс</div><div class="pageno">05</div>
@@ -564,14 +567,15 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
     <div class="chrome"><span>// предложение · обсуждается</span><span class="on">15 / 16</span></div>
     <div class="pad" style="padding-top:112px">
       <div class="kicker reveal">Распределение по командам</div>
-      <h2 class="title reveal" style="font-size:62px">Кто в какой <span class="c">команде</span></h2>
-      <div class="grid3 reveal d-a" style="margin-top:32px;align-items:start">
+      <h2 class="title reveal" style="font-size:58px">Кто в какой <span class="c">команде</span></h2>
+      <p class="lead reveal" style="font-size:23px;margin-top:14px">Q3 = 6 спринтов, минус ~1 на отпуска = 5 рабочих. Считаем ёмкость на квартал — бэклог каждой команды влезает с запасом.</p>
+      <div class="grid3 reveal d-a" style="margin-top:22px;align-items:start">
         <div class="card" style="padding:26px 28px">
           <div class="ico" style="color:var(--amber)">RUN · техдолг + поддержка</div>
           <p style="margin-top:12px;font-size:21px;color:var(--text)">Зинченко · Мишуков · Хасанов · Ковалёв · ¼ Степанова · ¼ Джиадзе</p>
           <p style="margin-top:8px;font-size:19px;color:var(--muted)">CTO — Горошко</p>
           <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
-            <span class="chip cy">Σ 293 SP</span><span class="chip">техдолг 34 SP</span><span class="chip">4.5 FTE</span>
+            <span class="chip cy">Σ 293 SP</span><span class="chip">техдолг 34 SP</span><span class="chip">4.5 FTE · ~1460/кв</span>
           </div>
         </div>
         <div class="card" style="padding:26px 28px">
@@ -579,7 +583,7 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
           <p style="margin-top:12px;font-size:21px;color:var(--text)">Сидоренко · Бабаев · Кашлев · ¾ Степанова</p>
           <p style="margin-top:8px;font-size:19px;color:var(--muted)">РО — Романов</p>
           <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
-            <span class="chip cy">Σ 203 SP</span><span class="chip">3.75 FTE</span>
+            <span class="chip cy">Σ 203 SP</span><span class="chip">3.75 FTE · ~1220/кв</span>
           </div>
         </div>
         <div class="card" style="padding:26px 28px">
@@ -587,14 +591,14 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
           <p style="margin-top:12px;font-size:21px;color:var(--text)">Смирнов · Савельев · ¾ Джиадзе</p>
           <p style="margin-top:8px;font-size:19px;color:var(--muted)">РО — Политов</p>
           <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
-            <span class="chip am">Σ 194 SP</span><span class="chip am">+~250 план</span><span class="chip">2.75 FTE</span>
+            <span class="chip am">Σ 194 SP</span><span class="chip am">+~250 план</span><span class="chip">2.75 FTE · ~895/кв</span>
           </div>
         </div>
       </div>
       <div class="card reveal d-c" style="margin-top:24px;padding:24px 32px;border-color:#5a4a2a">
         <div class="ico" style="color:var(--amber)">НА ОБСУЖДЕНИЕ · 3 вопроса</div>
         <ul class="ulist" style="margin-top:14px">
-          <li style="font-size:20px;margin-bottom:11px"><b>Формы</b> — самая маленькая команда (2.75 FTE), а на ней самый тяжёлый эпик Form-Core 2.0 (~250 SP). Могут не успеть за Q3 — нужен ещё один backend.</li>
+          <li style="font-size:20px;margin-bottom:11px"><b>Формы</b> — самая плотная команда (2.75 FTE), но за квартал ёмкость ~895 SP. Form-Core 2.0 (~250) + техдолг (104) + Jira (194) ≈ 550 SP — влезает. Риск только в сроках: эпик ещё не декомпозирован.</li>
           <li style="font-size:20px;margin-bottom:11px"><b>Горошко</b> уходит в CTO, но на нём почти весь backend-техдолг (104 SP form-core). Кто его разбирает после перевода?</li>
           <li style="font-size:20px;margin-bottom:0"><b>Степанова и Джиадзе</b> работают по ¼ ставки — дробная загрузка мешает фокусу (в регламенте порог — от 50%).</li>
         </ul>
