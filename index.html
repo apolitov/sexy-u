@@ -216,7 +216,7 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
     <div class="chrome reveal"><span>// платформа · регламент работы</span><span class="on">v2.0 · старт спринт 138 — 13.07.2026</span></div>
     <div class="t-kick kicker reveal">Уралсиб</div>
     <h1 class="t-title reveal">Новый процесс<br>работы <span class="c">команды</span></h1>
-    <div class="t-sub reveal"><b>develop / run</b> · фокусные <b>V-TEAM</b> · гейт <b>DoR</b></div>
+    <div class="t-sub reveal"><b>develop / run</b> · <b>V-TEAM</b> на одну задачу · гейт <b>DoR</b></div>
     <div class="rail reveal">
       <span class="node" style="left:0%"></span><span class="rlabel" style="left:0%">планинг</span>
       <span class="node" style="left:25%"></span><span class="rlabel" style="left:25%">кик-офы</span>
@@ -234,8 +234,8 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
       <h2 class="title reveal">Команду <span class="c">рвут на части</span></h2>
       <p class="lead reveal">Высокий TTM, расфокус, выгорание. Аналитику никто не ревьюет: где-то избыточна (лишние схемы БД), где-то пропущены пользовательские сценарии.</p>
       <div class="grid3" style="margin-top:42px">
-        <div class="card reveal d-a"><span class="tagcard"></span><div class="ico">// TTM</div><h3>Высокий TTM</h3><p>Задачи долго идут до клиента, релизы расползаются по спринтам.</p></div>
-        <div class="card reveal d-b"><span class="tagcard"></span><div class="ico">// FOCUS</div><h3>Расфокус и выгорание</h3><p>Людей дёргают на сторонние задачи внутри спринта. Нет предсказуемого ритма.</p></div>
+        <div class="card reveal d-a"><span class="tagcard"></span><div class="ico">// TTM</div><h3>Высокий TTM</h3><p>Задача идёт до клиента дольше спринта, релизы расползаются по спринтам.</p></div>
+        <div class="card reveal d-b"><span class="tagcard"></span><div class="ico">// FOCUS</div><h3>Расфокус и выгорание</h3><p>Людей дёргают на сторонние задачи внутри спринта. Ритм рваный.</p></div>
         <div class="card reveal d-c"><span class="tagcard"></span><div class="ico">// ANALYSIS</div><h3>Слабая аналитика</h3><p>Не ревьюется, есть ненужные схемы БД, пропущены сценарии пользователя.</p></div>
       </div>
     </div>
@@ -250,7 +250,7 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
       <h2 class="title reveal">Меняем <span class="c">три вещи</span></h2>
       <div class="grid3" style="margin-top:54px">
         <div class="card step reveal d-a"><div class="n">01 ▸ направления</div><h3>develop / run</h3><p>Делим работу: <b style="color:var(--text)">develop</b> — новое, <b style="color:var(--text)">run</b> — текущее, поддержка, рефакторинг. <b style="color:var(--cyan)">65% / 35%</b> людей.</p></div>
-        <div class="card step reveal d-b"><div class="n">02 ▸ фокус</div><h3>V-TEAM</h3><p>Внутри develop — фокусные команды на <b style="color:var(--text)">одну задачу</b>. V-TEAM не дёргают на сторонние задачи внутри спринта.</p></div>
+        <div class="card step reveal d-b"><div class="n">02 ▸ фокус</div><h3>V-TEAM</h3><p>Внутри develop — команда на <b style="color:var(--text)">одну задачу</b>. Не переключаем на другое внутри 2-недельного спринта.</p></div>
         <div class="card step reveal d-c"><div class="n">03 ▸ качество входа</div><h3>Гейт DoR</h3><p>Задача без аналитики и проработки <b style="color:var(--text)">не идёт в спринт</b>. Гейт держат CPO + тестлид.</p></div>
       </div>
     </div>
@@ -297,7 +297,7 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
         <div class="card reveal d-a">
           <div class="ico" style="color:var(--cyan)">// DEVELOP V-TEAM</div>
           <div class="stat" style="font-size:96px;margin:10px 0 6px">65 <small>SP</small></div>
-          <p>Одна задача на весь спринт. Полный фокус V-TEAM до релиза.</p>
+          <p>Одна задача на весь спринт. Без переключений до релиза.</p>
         </div>
         <div class="card reveal d-b">
           <div class="ico" style="color:var(--amber)">// RUN</div>
@@ -514,7 +514,7 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
           <tr><td class="pain">Высокий TTM</td><td class="fix"><b>V-TEAM</b> ведёт одну задачу и доводит до релиза</td></tr>
           <tr><td class="pain">Расфокус</td><td class="fix">V-TEAM <b>неприкасаема</b>, прерывают только P0 / P1</td></tr>
           <tr><td class="pain">Аналитики нет или слабая</td><td class="fix"><b>DoR-гейт</b> блокирует вход без аналитики</td></tr>
-          <tr><td class="pain">Выгорание</td><td class="fix"><b>Ротация</b> раз в 3 спринта + предсказуемый ритм</td></tr>
+          <tr><td class="pain">Выгорание</td><td class="fix"><b>Ротация</b> раз в 3 спринта, фиксированный 2-недельный ритм</td></tr>
           <tr><td class="pain">Сложно эксплуатировать</td><td class="fix">Тестлид в гейте + <b>DoD от QA</b> + run-команда</td></tr>
         </tbody>
       </table>
@@ -529,7 +529,7 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
       <div class="kicker reveal">Пример на нашем Q3-бэклоге</div>
       <h2 class="title reveal" style="font-size:64px">Как это ляжет на <span class="c">первый спринт</span></h2>
       <div class="reveal d-a" style="margin-top:30px">
-        <div class="week-h" style="color:var(--cyan)">develop · 65% · фокусные V-TEAM</div>
+        <div class="week-h" style="color:var(--cyan)">develop · 65% · V-TEAM на одну задачу</div>
         <div class="grid2" style="gap:24px;margin-top:8px">
           <div class="card" style="padding:24px 30px">
             <div class="ico">V-TEAM A · fullstack · контент</div>
@@ -611,10 +611,10 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
       <h2 class="reveal" style="font-weight:700;font-size:118px;line-height:1.0;letter-spacing:-.025em;margin:18px 0 0">Спринт <span class="c">138</span><br>13.07.2026</h2>
       <div class="reveal" style="margin-top:40px;display:flex;gap:16px;flex-wrap:wrap">
         <span class="chip cy" style="font-size:24px;padding:12px 22px">develop / run</span>
-        <span class="chip cy" style="font-size:24px;padding:12px 22px">фокусные V-TEAM</span>
+        <span class="chip cy" style="font-size:24px;padding:12px 22px">V-TEAM на 1 задачу</span>
         <span class="chip am" style="font-size:24px;padding:12px 22px">гейт DoR</span>
       </div>
-      <p class="reveal" style="margin-top:46px;font-family:var(--font-mono);font-size:26px;color:var(--muted)">Фокус · предсказуемый ритм · аналитика на входе. Вопросы?</p>
+      <p class="reveal" style="margin-top:46px;font-family:var(--font-mono);font-size:26px;color:var(--muted)">Одна задача на V-TEAM · ритм 2 недели · аналитика на входе. Вопросы?</p>
     </div>
   </section>
 
