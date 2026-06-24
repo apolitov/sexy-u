@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Платформа · Новый процесс работы команды</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===========================================
+   THEME — Ops / Blueprint
+   Меняйте переменные, чтобы поменять весь вид.
+   =========================================== */
+:root{
+  --stage-bg:#05080c;          /* фон вокруг сцены (леттербокс) */
+  --bg:#0b1118;
+  --panel:#0f1925;             /* карточки */
+  --panel-2:#0c1620;
+  --line:#1c2c3b;              /* разделители / рамки */
+  --line-soft:#16222e;
+  --cyan:#42e3c4;              /* основной акцент */
+  --cyan-dim:#2aa692;
+  --amber:#ffb454;             /* вторичный акцент */
+  --red:#ff6b6b;              /* P0 / тревога */
+  --green:#7ce0a3;            /* результат / ок */
+  --text:#e8eef4;
+  --text-2:#b6c6d4;
+  --muted:#7c93a6;
+  --font-display:'Space Grotesk',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+
+/* === MANDATORY FIXED-STAGE BASE (viewport-base.css) === */
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--stage-bg);}
+.deck-viewport{position:fixed;inset:0;overflow:hidden;background:var(--stage-bg);}
+.deck-stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;
+  background:radial-gradient(125% 95% at 82% -5%,#152433 0%,var(--bg) 52%,#06090d 100%);}
+.slide{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;display:block;
+  visibility:hidden;opacity:0;pointer-events:none;background:transparent;}
+.slide.active,.slide.visible{visibility:visible;opacity:1;pointer-events:auto;z-index:1;}
+img,video,canvas,svg{max-width:100%;max-height:100%;}
+.deck-controls{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:1000;}
+@media print{
+  html,body{width:1920px;height:auto;overflow:visible;background:#fff;}
+  .deck-viewport{position:static;overflow:visible;background:#fff;}
+  .deck-stage{position:static;width:auto;height:auto;transform:none!important;background:none;}
+  .slide{position:relative;display:block!important;visibility:visible!important;opacity:1!important;
+    pointer-events:auto!important;width:1920px;height:1080px;break-after:page;page-break-after:always;}
+  .slide:last-child{break-after:auto;page-break-after:auto;}
+  .deck-controls{display:none!important;}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.2s!important;}
+}
+
+/* === SHARED SLIDE CHROME === */
+*{box-sizing:border-box;}
+.slide{font-family:var(--font-display);color:var(--text);}
+/* точечная сетка-чертёж позади контента */
+.slide::before{content:"";position:absolute;inset:0;
+  background-image:radial-gradient(var(--line) 1.3px,transparent 1.3px);background-size:48px 48px;opacity:.42;}
+/* тонкая рамка слайда */
+.slide::after{content:"";position:absolute;inset:54px;border:1px solid var(--line);pointer-events:none;}
+
+.pad{position:absolute;inset:0;padding:118px 120px 116px;}
+.chrome{position:absolute;left:120px;right:120px;top:92px;display:flex;justify-content:space-between;
+  font-family:var(--font-mono);font-size:19px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;}
+.chrome .on{color:var(--cyan);}
+.kicker{font-family:var(--font-mono);font-size:22px;letter-spacing:.4em;color:var(--amber);text-transform:uppercase;}
+.title{font-weight:700;font-size:78px;line-height:1.02;letter-spacing:-.02em;margin:22px 0 0;}
+.title .c{color:var(--cyan);}
+.lead{font-size:30px;color:var(--text-2);line-height:1.4;max-width:1400px;margin-top:26px;}
+
+/* corner ticks (на титуле/финале) */
+.corner{position:absolute;width:22px;height:22px;border:2px solid var(--cyan);z-index:2;}
+.c1{left:46px;top:46px;border-right:0;border-bottom:0}.c2{right:46px;top:46px;border-left:0;border-bottom:0}
+.c3{left:46px;bottom:46px;border-right:0;border-top:0}.c4{right:46px;bottom:46px;border-left:0;border-top:0}
+
+/* page footer marker */
+.pageno{position:absolute;right:120px;bottom:84px;font-family:var(--font-mono);font-size:18px;color:var(--muted);letter-spacing:.08em;}
+.brandfoot{position:absolute;left:120px;bottom:84px;font-family:var(--font-mono);font-size:18px;color:var(--muted);letter-spacing:.08em;}
+
+/* === CARDS / GRID === */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+.card{background:linear-gradient(180deg,var(--panel) 0%,var(--panel-2) 100%);border:1px solid var(--line);
+  border-radius:14px;padding:34px 36px;position:relative;}
+.card h3{font-size:30px;font-weight:600;margin:0 0 12px;}
+.card p{font-size:23px;line-height:1.45;color:var(--text-2);margin:0;}
+.card .ico{font-family:var(--font-mono);font-size:20px;color:var(--cyan);letter-spacing:.1em;}
+.tagcard{position:absolute;top:-1px;left:34px;height:4px;width:64px;background:var(--cyan);border-radius:0 0 4px 4px;}
+
+/* numbered step cards */
+.step .n{font-family:var(--font-mono);font-size:24px;color:var(--amber);letter-spacing:.1em;}
+.step h3{font-size:34px;margin-top:8px;}
+
+/* pills / chips */
+.chip{display:inline-block;font-family:var(--font-mono);font-size:19px;padding:6px 14px;border-radius:999px;
+  border:1px solid var(--line);color:var(--text-2);background:var(--panel-2);}
+.chip.cy{color:var(--cyan);border-color:var(--cyan-dim);}
+.chip.am{color:var(--amber);border-color:#7a5a2a;}
+
+/* generic list */
+.ulist{list-style:none;margin:0;padding:0;}
+.ulist li{position:relative;padding-left:34px;font-size:24px;line-height:1.5;color:var(--text-2);margin-bottom:16px;}
+.ulist li::before{content:"";position:absolute;left:4px;top:13px;width:11px;height:11px;border:2px solid var(--cyan);transform:rotate(45deg);}
+.ulist li b{color:var(--text);font-weight:600;}
+
+/* === TIMELINE (ритм) === */
+.weeks{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:30px;}
+.week{position:relative;}
+.week-h{font-family:var(--font-mono);font-size:21px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.ev{display:flex;gap:20px;align-items:flex-start;padding:13px 0;}
+.ev .t{font-family:var(--font-mono);font-size:19px;color:var(--cyan);min-width:140px;letter-spacing:.02em;}
+.ev .x{font-size:23px;color:var(--text);font-weight:500;}
+.ev .who{font-size:18px;color:var(--muted);display:block;margin-top:3px;font-weight:400;}
+.ev.key{background:linear-gradient(90deg,rgba(255,180,84,.12),transparent);border-left:3px solid var(--amber);
+  padding-left:16px;margin-left:-19px;border-radius:0 8px 8px 0;}
+.ev.key .t{color:var(--amber);}
+
+/* === TABLE (что получаем) === */
+.t2{width:100%;border-collapse:collapse;margin-top:24px;}
+.t2 th{text-align:left;font-family:var(--font-mono);font-size:18px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);padding:0 0 16px;border-bottom:1px solid var(--line);}
+.t2 td{padding:20px 0;border-bottom:1px solid var(--line-soft);font-size:25px;vertical-align:top;}
+.t2 td.pain{color:var(--text-2);width:42%;}
+.t2 td.fix{color:var(--text);}
+.t2 td.fix b{color:var(--cyan);font-weight:600;}
+
+/* === STAT === */
+.stat{font-weight:700;font-size:150px;line-height:.9;color:var(--cyan);letter-spacing:-.03em;}
+.stat small{font-size:46px;color:var(--text-2);font-weight:500;}
+
+/* priority rows */
+.prow{display:grid;grid-template-columns:130px 1fr 1fr;gap:24px;align-items:center;padding:20px 26px;
+  border:1px solid var(--line);border-radius:12px;margin-bottom:16px;background:var(--panel-2);}
+.prow .p{font-family:var(--font-mono);font-weight:700;font-size:30px;}
+.prow .d{font-size:23px;color:var(--text);}
+.prow .a{font-size:21px;color:var(--text-2);}
+.prow.p0{border-color:#5c2630;background:linear-gradient(90deg,rgba(255,107,107,.10),var(--panel-2));}
+.prow.p0 .p{color:var(--red);}
+.prow.p1 .p{color:var(--amber);}
+.prow.p2 .p{color:var(--cyan);}
+.prow.p3 .p{color:var(--muted);}
+
+/* DoR columns */
+.dor{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:24px;}
+.dorcol{background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:30px 32px;}
+.dorcol.hard{border-color:var(--cyan-dim);}
+.dorh{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;}
+.dorh h3{font-size:30px;margin:0;}
+.dorh .b{font-family:var(--font-mono);font-size:17px;color:var(--muted);}
+.dornote{font-size:18px;color:var(--muted);margin:0 0 18px;line-height:1.4;}
+.dlist{list-style:none;margin:0;padding:0;}
+.dlist li{font-size:20px;line-height:1.36;color:var(--text-2);padding:9px 0 9px 42px;position:relative;border-top:1px solid var(--line-soft);}
+.dlist li:first-child{border-top:0;}
+.dlist li .k{position:absolute;left:0;top:9px;font-family:var(--font-mono);font-size:16px;color:var(--cyan);}
+.dorcol.soft .dlist li .k{color:var(--amber);}
+.dlist li b{color:var(--text);font-weight:600;}
+.dlist li .who{color:var(--muted);font-size:17px;}
+
+/* === ANIMATIONS === */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.slide.visible .reveal{opacity:1;transform:none;}
+.slide.visible .reveal:nth-child(1){transition-delay:.06s}
+.slide.visible .reveal:nth-child(2){transition-delay:.16s}
+.slide.visible .reveal:nth-child(3){transition-delay:.26s}
+.slide.visible .reveal:nth-child(4){transition-delay:.36s}
+.slide.visible .reveal:nth-child(5){transition-delay:.46s}
+.slide.visible .reveal:nth-child(6){transition-delay:.56s}
+.d-a{transition-delay:.1s!important}.d-b{transition-delay:.22s!important}.d-c{transition-delay:.34s!important}
+.d-d{transition-delay:.46s!important}.d-e{transition-delay:.58s!important}.d-f{transition-delay:.7s!important}
+
+/* === TITLE / CLOSING === */
+.glow{position:absolute;width:780px;height:780px;right:-170px;top:-230px;border-radius:50%;
+  background:radial-gradient(circle,rgba(66,227,196,.16),transparent 66%);filter:blur(6px);pointer-events:none;}
+.t-kick{position:absolute;left:120px;top:300px;}
+.t-title{position:absolute;left:118px;top:344px;font-weight:700;font-size:122px;line-height:1.04;letter-spacing:-.025em;}
+.t-sub{position:absolute;left:122px;top:752px;font-family:var(--font-mono);font-size:31px;color:var(--muted);letter-spacing:.03em;}
+.t-sub b{color:var(--text);font-weight:500;}
+.rail{position:absolute;left:120px;right:120px;bottom:158px;height:2px;background:var(--line);}
+.node{position:absolute;top:-7px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:2px solid var(--cyan);}
+.node.am{border-color:var(--amber);}
+.rlabel{position:absolute;top:18px;font-family:var(--font-mono);font-size:16px;color:var(--muted);transform:translateX(-50%);white-space:nowrap;}
+
+/* === EDIT MODE (inline) === */
+.edit-hotzone{position:fixed;top:0;left:0;width:80px;height:80px;z-index:10000;cursor:pointer;}
+.edit-toggle{position:fixed;top:16px;left:16px;width:46px;height:46px;border-radius:10px;border:1px solid var(--line);
+  background:var(--panel);color:var(--text);font-size:20px;cursor:pointer;opacity:0;pointer-events:none;
+  transition:opacity .3s ease;z-index:10001;}
+.edit-toggle.show,.edit-toggle.active{opacity:1;pointer-events:auto;}
+.edit-toggle.active{border-color:var(--cyan);color:var(--cyan);}
+[contenteditable="true"]{outline:1.5px dashed var(--cyan-dim);outline-offset:4px;border-radius:4px;}
+.edit-hint{position:fixed;top:18px;left:74px;font-family:var(--font-mono);font-size:13px;color:var(--muted);
+  background:var(--panel);padding:8px 12px;border-radius:8px;border:1px solid var(--line);opacity:0;
+  transition:opacity .3s;z-index:10001;pointer-events:none;}
+.edit-hint.show{opacity:1;}
+
+/* nav dots */
+.dots{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:9px;z-index:1000;}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--line);cursor:pointer;transition:.3s;}
+.dots i.on{background:var(--cyan);width:22px;border-radius:4px;}
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage">
+
+  <!-- ============ 1 · TITLE ============ -->
+  <section class="slide title active">
+    <div class="glow"></div>
+    <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+    <div class="chrome reveal"><span>// платформа · регламент работы</span><span class="on">v2.0 · старт спринт 138 — 13.07.2026</span></div>
+    <div class="t-kick kicker reveal">Уралсиб</div>
+    <h1 class="t-title reveal">Новый процесс<br>работы <span class="c">команды</span></h1>
+    <div class="t-sub reveal"><b>develop / run</b> · фокусные <b>V-TEAM</b> · гейт <b>DoR</b></div>
+    <div class="rail reveal">
+      <span class="node" style="left:0%"></span><span class="rlabel" style="left:0%">планинг</span>
+      <span class="node" style="left:25%"></span><span class="rlabel" style="left:25%">кик-офы</span>
+      <span class="node am" style="left:55%"></span><span class="rlabel" style="left:55%">DoR-гейт</span>
+      <span class="node" style="left:80%"></span><span class="rlabel" style="left:80%">тест</span>
+      <span class="node" style="left:100%"></span><span class="rlabel" style="left:100%">релиз</span>
+    </div>
+  </section>
+
+  <!-- ============ 2 · ЗАЧЕМ ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// контекст</span><span class="on">02 / 15</span></div>
+    <div class="pad">
+      <div class="kicker reveal">Зачем меняем</div>
+      <h2 class="title reveal">Команду <span class="c">рвут на части</span></h2>
+      <p class="lead reveal">Высокий TTM, расфокус, выгорание. Аналитика не ревьюется, где-то избыточна, но в ней пропущены пользовательские сценарии.</p>
+      <div class="grid3" style="margin-top:42px">
+        <div class="card reveal d-a"><span class="tagcard"></span><div class="ico">// TTM</div><h3>Высокий TTM</h3><p>Задачи долго идут до клиента, релизы расползаются по спринтам.</p></div>
+        <div class="card reveal d-b"><span class="tagcard"></span><div class="ico">// FOCUS</div><h3>Расфокус и выгорание</h3><p>Людей дёргают на сторонние задачи внутри спринта. Нет предсказуемого ритма.</p></div>
+        <div class="card reveal d-c"><span class="tagcard"></span><div class="ico">// ANALYSIS</div><h3>Слабая аналитика</h3><p>Не ревьюется, есть ненужные схемы БД, пропущены сценарии пользователя.</p></div>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">02</div>
+  </section>
+
+  <!-- ============ 3 · МЕНЯЕМ ТРИ ВЕЩИ ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// решение</span><span class="on">03 / 15</span></div>
+    <div class="pad">
+      <div class="kicker reveal">Что меняем</div>
+      <h2 class="title reveal">Меняем <span class="c">три вещи</span></h2>
+      <div class="grid3" style="margin-top:54px">
+        <div class="card step reveal d-a"><div class="n">01 ▸ направления</div><h3>develop / run</h3><p>Делим работу: <b style="color:var(--text)">develop</b> — новое, <b style="color:var(--text)">run</b> — текущее, поддержка, рефакторинг. <b style="color:var(--cyan)">65% / 35%</b> людей.</p></div>
+        <div class="card step reveal d-b"><div class="n">02 ▸ фокус</div><h3>V-TEAM</h3><p>Внутри develop — фокусные команды на <b style="color:var(--text)">одну задачу</b>. V-TEAM не дёргают на сторонние задачи внутри спринта.</p></div>
+        <div class="card step reveal d-c"><div class="n">03 ▸ качество входа</div><h3>Гейт DoR</h3><p>Задача без аналитики и проработки <b style="color:var(--text)">не идёт в спринт</b>. Гейт держат CPO + тестлид.</p></div>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">03</div>
+  </section>
+
+  <!-- ============ 4 · СТРУКТУРА ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// структура</span><span class="on">04 / 15</span></div>
+    <div class="pad">
+      <div class="kicker reveal">Структура направлений</div>
+      <h2 class="title reveal">Два <span class="c">направления</span></h2>
+      <div class="grid2" style="margin-top:40px;align-items:start">
+        <div class="card reveal d-a">
+          <div class="ico" style="color:var(--cyan)">// DEVELOP · 65% · ведёт CPO</div>
+          <h3 style="margin-top:10px">Новое и крупное</h3>
+          <ul class="ulist" style="margin-top:14px">
+            <li><b>fullstack-команда:</b> 1 BE + 1 FE + 1 QA + 0.5 SA + дизайнер по запросу. Фронт <b>&gt;13 SP</b>.</li>
+            <li><b>backend-команда:</b> 1 BE + 1 QA + 0.5 SA. Фронт <b>≤13 SP</b>; FE-лид подключается из run.</li>
+          </ul>
+        </div>
+        <div class="card reveal d-b">
+          <div class="ico" style="color:var(--amber)">// RUN · 35% · ведёт CTO</div>
+          <h3 style="margin-top:10px">Текущее и техдолг</h3>
+          <ul class="ulist" style="margin-top:14px">
+            <li>1 BE + 1–2 FE + 1 QA + 0.5 SA.</li>
+            <li>Рефакторинг, поддержка, баги, мелкие доработки.</li>
+            <li><b>Бережёт develop от текучки.</b></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">04</div>
+  </section>
+
+  <!-- ============ 5 · КАПАСИТИ ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// капасити</span><span class="on">05 / 15</span></div>
+    <div class="pad">
+      <div class="kicker reveal">Капасити</div>
+      <h2 class="title reveal"><span class="c">65 SP</span> на человека в спринт</h2>
+      <p class="lead reveal">Фактически часы по Фибоначчи на 2 недели.</p>
+      <div class="grid2" style="margin-top:40px;align-items:start">
+        <div class="card reveal d-a">
+          <div class="ico" style="color:var(--cyan)">// DEVELOP V-TEAM</div>
+          <div class="stat" style="font-size:96px;margin:10px 0 6px">65 <small>SP</small></div>
+          <p>Одна задача на весь спринт. Полный фокус V-TEAM до релиза.</p>
+        </div>
+        <div class="card reveal d-b">
+          <div class="ico" style="color:var(--amber)">// RUN</div>
+          <div style="display:flex;gap:14px;margin:16px 0 6px;flex-wrap:wrap">
+            <span class="chip cy" style="font-size:22px;padding:10px 18px">40 SP · рефакторинг</span>
+            <span class="chip am" style="font-size:22px;padding:10px 18px">25 SP · поддержка/баги</span>
+          </div>
+          <p>Лимит поддержки <b style="color:var(--text)">25 SP жёсткий</b>. Превышение — эскалация на CPO/CTO: сигнал нанимать или менять архитектуру.</p>
+        </div>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">05</div>
+  </section>
+
+  <!-- ============ 6 · V-TEAM ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// фокус</span><span class="on">06 / 15</span></div>
+    <div class="pad">
+      <div class="kicker reveal">Фокусная команда</div>
+      <h2 class="title reveal">V-TEAM — <span class="c">одна задача</span> на спринт</h2>
+      <div class="grid2" style="margin-top:38px;align-items:start">
+        <ul class="ulist reveal d-a" style="font-size:25px">
+          <li>Формируется на <b>1 спринт</b>. Никаких переключений на другие задачи внутри спринта.</li>
+          <li>Живёт <b>до релиза задачи в прод</b> — даже если состав по ротации поменялся, доводит свою задачу.</li>
+          <li>Один человек = одна V-TEAM = <b>одна задача</b> в моменте.</li>
+        </ul>
+        <ul class="ulist reveal d-b" style="font-size:25px">
+          <li>Дейлик у V-TEAM <b>свой</b>, отдельно от run.</li>
+          <li>Закончил задачи или ждёшь долгого ответа QA → по согласованию уходишь в <b>run на техдолг</b>.</li>
+          <li>Прерывают только <b>P0 / P1</b>. P2 и ниже — мимо V-TEAM.</li>
+        </ul>
+      </div>
+      <div class="card reveal d-c" style="margin-top:28px;padding:24px 32px">
+        <p style="font-size:23px"><b style="color:var(--cyan)">На практике:</b> разработка — спринт N · тестирование и фикс багов — первая неделя N+1 · релиз — среда N+1.</p>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">06</div>
+  </section>
+
+  <!-- ============ 7 · РИТМ СПРИНТА ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// ритм · 2 недели</span><span class="on">07 / 15</span></div>
+    <div class="pad" style="padding-top:112px">
+      <div class="kicker reveal">Ритм спринта</div>
+      <h2 class="title reveal" style="font-size:66px">Как устроены <span class="c">две недели</span></h2>
+      <div class="weeks">
+        <div class="week reveal d-a">
+          <div class="week-h">Неделя 1</div>
+          <div class="ev"><span class="t">Пн · 10:00</span><span class="x">Планирование<span class="who">все</span></span></div>
+          <div class="ev"><span class="t">Пн · 11:00</span><span class="x">Кик-оф концепта новых задач<span class="who">CPO + CTO + SA + мейнтейнер</span></span></div>
+          <div class="ev"><span class="t">Ср · 13:00</span><span class="x">Кик-оф V-TEAM (большие задачи)<span class="who">CTO + SA + CPO + будущие исполнители</span></span></div>
+          <div class="ev"><span class="t">Чт / Пт</span><span class="x">Контроль DoR-Soft<span class="who">V-TEAM + SA</span></span></div>
+        </div>
+        <div class="week reveal d-b">
+          <div class="week-h">Неделя 2</div>
+          <div class="ev"><span class="t">Вт · 14:00</span><span class="x">Мини-груминг run<span class="who">CTO + run + 1 SA</span></span></div>
+          <div class="ev key"><span class="t">Ср · 13:00</span><span class="x">Груминг + DoR-гейт<span class="who">CPO + тестлид + SA + будущая V-TEAM</span></span></div>
+          <div class="ev"><span class="t">Чт</span><span class="x">Передача в тест<span class="who">V-TEAM + run</span></span></div>
+          <div class="ev"><span class="t">Пт</span><span class="x">Ретро<span class="who">все</span></span></div>
+          <div class="ev"><span class="t">Ср · N+1</span><span class="x">Релиз<span class="who">V-TEAM + тестлид · релизы по средам</span></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">07</div>
+  </section>
+
+  <!-- ============ 8 · DoR-ГЕЙТ ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// качество входа</span><span class="on">08 / 15</span></div>
+    <div class="pad" style="padding-top:112px">
+      <div class="kicker reveal">Гейт DoR</div>
+      <h2 class="title reveal" style="font-size:66px">Без проработки — <span class="c">не в спринт</span></h2>
+      <div class="dor">
+        <div class="dorcol hard reveal d-a">
+          <div class="dorh"><h3 style="color:var(--cyan)">DoR-Hard</h3><span class="b">// блокирует вход</span></div>
+          <p class="dornote">Проверяют CPO + тестлид на груминге (ср нед 2). Кворум 2 из 2. Нет полного — задача возвращается.</p>
+          <ul class="dlist">
+            <li><span class="k">H1</span>Цель, гипотеза, <b>бизнес-ценность</b></li>
+            <li><span class="k">H2</span>Согласовано с ИБ / смежниками / юристами</li>
+            <li><span class="k">H3</span>Эпик + декомпозиция задач + <b>оценка</b></li>
+            <li><span class="k">H4</span>Решение по смежным системам (даты ИФТ)</li>
+            <li><span class="k">H5</span>DoD эпика прописан</li>
+            <li><span class="k">H6</span>DoD спринта прописан</li>
+            <li><span class="k">H7</span>Каркас спеки + ключевая диаграмма (BPMN/Sequence)</li>
+          </ul>
+        </div>
+        <div class="dorcol soft reveal d-b">
+          <div class="dorh"><h3 style="color:var(--amber)">DoR-Soft</h3><span class="b">// добивает V-TEAM</span></div>
+          <p class="dornote">Контрольная точка — чт / утро пт нед 1. Флаг на дейлике → CPO решает в тот же день.</p>
+          <ul class="dlist">
+            <li><span class="k">S1</span>Детализация спеки до запросов/ответов <span class="who">— SA</span></li>
+            <li><span class="k">S2</span>Тест-кейсы и тест-документация <span class="who">— QA + SA</span></li>
+            <li><span class="k">S3</span>Финализирован дизайн <span class="who">— дизайнер + FE</span></li>
+            <li><span class="k">S4</span>Финальный копирайтинг <span class="who">— SA + продакт</span></li>
+            <li><span class="k">S5</span>Правила продуктовой аналитики <span class="who">— SA</span></li>
+            <li><span class="k">S6</span>Что покажем на демо <span class="who">— V-TEAM</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">08</div>
+  </section>
+
+  <!-- ============ 9 · ТРИАЖ + SA-КОНВЕЙЕР ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// подготовка</span><span class="on">09 / 15</span></div>
+    <div class="pad">
+      <div class="kicker reveal">Триаж и SA-конвейер</div>
+      <h2 class="title reveal">Кто <span class="c">готовит</span> задачи</h2>
+      <p class="lead reveal">SA — 2 человека и бутылочное горлышко всего процесса. Триаж и буфер защищают конвейер подготовки.</p>
+      <div class="grid2" style="margin-top:38px;align-items:start">
+        <div class="card reveal d-a">
+          <div class="ico" style="color:var(--cyan)">// ТРИАЖ · раз в квартал · CPO + CTO + SA</div>
+          <h3 style="margin-top:12px">Тегируем каждую задачу</h3>
+          <ul class="ulist" style="margin-top:14px">
+            <li><b>Направление:</b> develop / run</li>
+            <li><b>Команда:</b> fullstack / backend</li>
+            <li><b>Размер анализа:</b> маленькая <b>≤32 SP</b> · большая <b>&gt;32 SP</b></li>
+          </ul>
+        </div>
+        <div class="card reveal d-b">
+          <div class="ico" style="color:var(--amber)">// КАПАСИТИ SA · 65 SP / спринт</div>
+          <div style="display:flex;gap:12px;margin:18px 0 4px;flex-wrap:wrap">
+            <span class="chip cy">32 SP · подготовка</span>
+            <span class="chip">18 SP · поддержка V-TEAM</span>
+            <span class="chip am">15 SP · встречи + run</span>
+          </div>
+          <p style="margin-top:16px"><b style="color:var(--text)">Буфер:</b> всегда 3 задачи на разной стадии — в разработке, в финализации, в концепте. Страховка от срыва аналитики.</p>
+        </div>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">09</div>
+  </section>
+
+  <!-- ============ 10 · СХЕМЫ ПОДГОТОВКИ SA ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// конвейер</span><span class="on">10 / 15</span></div>
+    <div class="pad" style="padding-top:112px">
+      <div class="kicker reveal">Схемы подготовки SA</div>
+      <h2 class="title reveal" style="font-size:64px">Маленькая — <span class="c">2 спринта</span>, большая — 3</h2>
+      <div class="reveal d-a" style="margin-top:34px">
+        <div class="week-h" style="color:var(--cyan)">Схема А · маленькая задача (≤32 SP анализа)</div>
+        <div class="grid2" style="gap:24px;margin-top:8px">
+          <div class="card" style="padding:24px 30px"><div class="ico">N · подготовка</div><p style="margin-top:8px">Кик-оф концепта, спецификация, диаграммы, согласования ИБ. Ср нед 2 — груминг + DoR-гейт (кик-оф V-TEAM совмещён).</p></div>
+          <div class="card" style="padding:24px 30px"><div class="ico">N+1 · разработка</div><p style="margin-top:8px">Задача в V-TEAM. SA в команде первые 3 дня + по запросу, добивает Soft.</p></div>
+        </div>
+      </div>
+      <div class="reveal d-c" style="margin-top:26px">
+        <div class="week-h" style="color:var(--amber)">Схема Б · большая задача (&gt;32 SP анализа)</div>
+        <div class="grid3" style="gap:22px;margin-top:8px">
+          <div class="card" style="padding:22px 26px"><div class="ico">N−1 · концепт</div><p style="margin-top:8px">Первичная аналитика, концепт с CTO, старт ИБ, при кросс-команде — арх-ревью. Черновая постановка + уточнённая оценка.</p></div>
+          <div class="card" style="padding:22px 26px"><div class="ico">N · финализация</div><p style="margin-top:8px">Спецификация. Ср нед 1 — отдельный кик-оф V-TEAM. Финализация Soft, груминг + DoR-гейт.</p></div>
+          <div class="card" style="padding:22px 26px"><div class="ico">N+1 · разработка</div><p style="margin-top:8px">Задача в V-TEAM. SA первые 3 дня + по запросу.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">10</div>
+  </section>
+
+  <!-- ============ 11 · ПРЕРЫВАНИЯ ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// прерывания</span><span class="on">11 / 15</span></div>
+    <div class="pad">
+      <div class="kicker reveal">Матрица прерываний</div>
+      <h2 class="title reveal">Когда можно <span class="c">дёргать V-TEAM</span></h2>
+      <div style="margin-top:38px">
+        <div class="prow p0 reveal d-a"><span class="p">P0</span><span class="d">Прод лежит, критический функционал задет</span><span class="a">→ можно дёрнуть V-TEAM, любой ресурс · CTO мгновенно</span></div>
+        <div class="prow p1 reveal d-b"><span class="p">P1</span><span class="d">Сильная деградация</span><span class="a">→ берём из run, V-TEAM только если нет других · CTO + CPO</span></div>
+        <div class="prow p2 reveal d-c"><span class="p">P2</span><span class="d">Срочно, не критично</span><span class="a">→ только run · CPO в течение дня</span></div>
+        <div class="prow p3 reveal d-d"><span class="p">P3+</span><span class="d">Обычное</span><span class="a">→ копится в run-бэклоге</span></div>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">11</div>
+  </section>
+
+  <!-- ============ 10 · ЕСЛИ НЕ УСПЕЛИ ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// исключение</span><span class="on">12 / 15</span></div>
+    <div class="pad">
+      <div class="kicker reveal">Если не успели</div>
+      <h2 class="title reveal">Задача <span class="c">не влезла</span> в спринт</h2>
+      <p class="lead reveal">Это исключение. План рассчитан так, чтобы укладывались. Бывает из-за ошибки в оценке или новых вводных по ходу.</p>
+      <div class="grid2" style="margin-top:36px;align-items:start">
+        <div class="card reveal d-a">
+          <div class="ico" style="color:var(--cyan)">// что делаем</div>
+          <ul class="ulist" style="margin-top:14px">
+            <li>Поднимаем флаг на дейлике <b>сразу</b>, не в последний день.</li>
+            <li>Декомпозируем хвост → <b>S-задача</b> той же V-TEAM на следующий спринт.</li>
+            <li><b>Релиз сдвигается.</b> Иное решение принимает CPO.</li>
+          </ul>
+        </div>
+        <div class="card reveal d-b">
+          <div class="ico" style="color:var(--amber)">// как минимизируем риск</div>
+          <ul class="ulist" style="margin-top:14px">
+            <li>Декомпозируем на <b>груминге</b>, а не «придумаем по ходу».</li>
+            <li>Обсуждаем три уровня скоупа: нужно для клиента / без чего не в прод / nice to have.</li>
+            <li>Не «впихиваем» в спринт всё подряд.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">12</div>
+  </section>
+
+  <!-- ============ 11 · ЧТО ПОЛУЧАЕМ ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// результат</span><span class="on">13 / 15</span></div>
+    <div class="pad">
+      <div class="kicker reveal">Что получаем</div>
+      <h2 class="title reveal">Боль → <span class="c">чем закрываем</span></h2>
+      <table class="t2 reveal d-a">
+        <thead><tr><th>Боль сейчас</th><th>Закрываем чем</th></tr></thead>
+        <tbody>
+          <tr><td class="pain">Высокий TTM</td><td class="fix"><b>V-TEAM</b> фокусится на одной задаче и доводит до релиза</td></tr>
+          <tr><td class="pain">Расфокус</td><td class="fix">V-TEAM <b>неприкасаема</b>, прерывания только P0 / P1</td></tr>
+          <tr><td class="pain">Аналитики нет / плохая</td><td class="fix"><b>DoR-гейт</b> блокирует вход без аналитики</td></tr>
+          <tr><td class="pain">Выгорание</td><td class="fix"><b>Ротация</b> раз в 3 спринта + предсказуемый ритм</td></tr>
+          <tr><td class="pain">Сложно эксплуатировать</td><td class="fix">Тестлид в гейте + <b>DoD от QA</b> + run-команда</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">13</div>
+  </section>
+
+  <!-- ============ 14 · ПРИМЕР · Q3-БЭКЛОГ ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// пример · спринт 138</span><span class="on">14 / 15</span></div>
+    <div class="pad" style="padding-top:112px">
+      <div class="kicker reveal">Пример на нашем Q3-бэклоге</div>
+      <h2 class="title reveal" style="font-size:64px">Как это ляжет на <span class="c">первый спринт</span></h2>
+      <div class="reveal d-a" style="margin-top:30px">
+        <div class="week-h" style="color:var(--cyan)">develop · 65% · фокусные V-TEAM</div>
+        <div class="grid2" style="gap:24px;margin-top:8px">
+          <div class="card" style="padding:24px 30px">
+            <div class="ico">V-TEAM A · fullstack · контент</div>
+            <h3 style="margin-top:8px;font-size:27px"><span class="chip cy" style="font-size:16px;padding:3px 10px;vertical-align:middle">USB-19166</span> Сизиф — продукты и SEO</h3>
+            <p style="margin-top:8px;font-size:21px">Контент-стрим: Сизиф + локализация сайта (USB-18093). В активной разработке.</p>
+          </div>
+          <div class="card" style="padding:24px 30px">
+            <div class="ico">V-TEAM B · backend</div>
+            <h3 style="margin-top:8px;font-size:27px"><span class="chip cy" style="font-size:16px;padding:3px 10px;vertical-align:middle">USB-18975</span> Form-Core 2.0 + техдолг</h3>
+            <p style="margin-top:8px;font-size:21px">Декомпозиция концепта Form-Core 2.0 + техдолг form-core (Kafka, OpenAPI, миграции, чистка форм).</p>
+          </div>
+        </div>
+      </div>
+      <div class="reveal d-c" style="margin-top:24px">
+        <div class="week-h" style="color:var(--amber)">run · 35% &nbsp;·&nbsp; CRM + техдолг и поддержка</div>
+        <div class="grid2" style="gap:24px;margin-top:8px">
+          <div class="card" style="padding:24px 30px">
+            <div class="ico" style="color:var(--amber)">RUN</div>
+            <h3 style="margin-top:8px;font-size:27px"><span class="chip am" style="font-size:16px;padding:3px 10px;vertical-align:middle">USB-17604</span> CRM для ЗП-проектов</h3>
+            <p style="margin-top:8px;font-size:21px">Минорные доделки CRM + поддержка прода и рефакторинг (std-logger, нагрузочное).</p>
+          </div>
+          <div class="card" style="padding:24px 30px">
+            <div class="ico" style="color:var(--amber)">RUN · ТЕХДОЛГ ФРОНТА</div>
+            <h3 style="margin-top:8px;font-size:27px"><span class="chip am" style="font-size:16px;padding:3px 10px;vertical-align:middle">USB-22373</span> Обновление фронт-стека · 123 SP</h3>
+            <p style="margin-top:8px;font-size:20px">react-hook-form 7+, замена reshadow (SWC remaster), Next.js 14+, React 18+, Biome. Плюс фиксы: блокировка формы до загрузки JS, картинки, Safari, дубли форм.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">14</div>
+  </section>
+
+  <!-- ============ 12 · CLOSING ============ -->
+  <section class="slide">
+    <div class="glow"></div>
+    <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+    <div class="chrome reveal"><span>// платформа · регламент работы</span><span class="on">15 / 15</span></div>
+    <div class="pad" style="display:flex;flex-direction:column;justify-content:center">
+      <div class="kicker reveal">Старт нового процесса</div>
+      <h2 class="reveal" style="font-weight:700;font-size:118px;line-height:1.0;letter-spacing:-.025em;margin:18px 0 0">Спринт <span class="c">138</span><br>13.07.2026</h2>
+      <div class="reveal" style="margin-top:40px;display:flex;gap:16px;flex-wrap:wrap">
+        <span class="chip cy" style="font-size:24px;padding:12px 22px">develop / run</span>
+        <span class="chip cy" style="font-size:24px;padding:12px 22px">фокусные V-TEAM</span>
+        <span class="chip am" style="font-size:24px;padding:12px 22px">гейт DoR</span>
+      </div>
+      <p class="reveal" style="margin-top:46px;font-family:var(--font-mono);font-size:26px;color:var(--muted)">Фокус · предсказуемый ритм · аналитика на входе. Вопросы?</p>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<!-- nav dots -->
+<div class="dots" id="dots"></div>
+<!-- edit affordance -->
+<div class="edit-hotzone" id="editHotzone"></div>
+<button class="edit-toggle" id="editToggle" title="Режим правки (E)">✏️</button>
+<div class="edit-hint" id="editHint">Режим правки · кликай текст · Ctrl+S — сохранить</div>
+
+<script>
+/* ===========================================
+   SLIDE CONTROLLER — клавиши, свайп, колесо, точки
+   =========================================== */
+class Deck{
+  constructor(){
+    this.slides=[...document.querySelectorAll('.slide')];
+    this.i=0;this.stage=document.getElementById('deckStage');
+    this.buildDots();this.scale();this.keys();this.touch();this.wheel();
+    window.addEventListener('resize',()=>this.scale());
+    this.show(0);
+  }
+  scale(){const k=Math.min(innerWidth/1920,innerHeight/1080);
+    this.stage.style.transform=`translate(${(innerWidth-1920*k)/2}px,${(innerHeight-1080*k)/2}px) scale(${k})`;}
+  buildDots(){const d=document.getElementById('dots');
+    this.slides.forEach((_,n)=>{const b=document.createElement('i');b.onclick=()=>this.show(n);d.appendChild(b);});
+    this.dots=[...d.children];}
+  show(n){this.i=Math.max(0,Math.min(n,this.slides.length-1));
+    this.slides.forEach((s,j)=>{s.classList.toggle('active',j===this.i);s.classList.toggle('visible',j===this.i);});
+    this.dots.forEach((d,j)=>d.classList.toggle('on',j===this.i));}
+  next(){this.show(this.i+1);}prev(){this.show(this.i-1);}
+  keys(){addEventListener('keydown',e=>{
+    if(e.target.getAttribute&&e.target.getAttribute('contenteditable')==='true')return;
+    if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();this.next();}
+    if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();this.prev();}
+    if(e.key==='Home')this.show(0);if(e.key==='End')this.show(this.slides.length-1);});}
+  touch(){let x=0;addEventListener('touchstart',e=>x=e.touches[0].clientX,{passive:true});
+    addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-x;
+      if(Math.abs(dx)>60)dx<0?this.next():this.prev();},{passive:true});}
+  wheel(){let lock=false;addEventListener('wheel',e=>{if(lock)return;
+    if(Math.abs(e.deltaY)<24)return;lock=true;e.deltaY>0?this.next():this.prev();
+    setTimeout(()=>lock=false,520);},{passive:true});}
+}
+const deck=new Deck();
+
+/* ===========================================
+   INLINE EDITOR — наведи угол / клавиша E, Ctrl+S — выгрузить HTML
+   =========================================== */
+const editor={
+  isActive:false,
+  sel:'.title,.kicker,.lead,.card h3,.card p,.ulist li,.t2 td,.ev .x,.who,.dlist li,.dornote,.t-title,.t-sub,.chip,.prow .d,.prow .a,.week-h,h2,p',
+  toggle(){this.isActive=!this.isActive;
+    document.querySelectorAll(this.sel).forEach(el=>el.setAttribute('contenteditable',this.isActive));
+    const t=document.getElementById('editToggle'),h=document.getElementById('editHint');
+    t.classList.toggle('active',this.isActive);t.classList.toggle('show',this.isActive);
+    h.classList.toggle('show',this.isActive);
+    if(this.isActive){try{localStorage.setItem('deck-edit','1');}catch(e){}}
+  },
+  restore(){try{const html=localStorage.getItem('deck-html');if(html)document.getElementById('deckStage').innerHTML=html;}catch(e){}}
+};
+/* persist edits */
+addEventListener('input',()=>{try{localStorage.setItem('deck-html',document.getElementById('deckStage').innerHTML);}catch(e){}});
+/* Ctrl+S → download standalone copy */
+addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();
+    const blob=new Blob(['<!DOCTYPE html>\n'+document.documentElement.outerHTML],{type:'text/html'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download='Платформа - презентация процесса.html';a.click();}
+  if((e.key==='e'||e.key==='E'||e.key==='у'||e.key==='У')&&!(e.target.getAttribute&&e.target.getAttribute('contenteditable')==='true')){
+    if(!e.ctrlKey&&!e.metaKey)editor.toggle();}
+});
+/* hotzone hover with grace period */
+(function(){const hz=document.getElementById('editHotzone'),tg=document.getElementById('editToggle');let to=null;
+  hz.addEventListener('mouseenter',()=>{clearTimeout(to);tg.classList.add('show');});
+  hz.addEventListener('mouseleave',()=>{to=setTimeout(()=>{if(!editor.isActive)tg.classList.remove('show');},400);});
+  tg.addEventListener('mouseenter',()=>clearTimeout(to));
+  tg.addEventListener('mouseleave',()=>{to=setTimeout(()=>{if(!editor.isActive)tg.classList.remove('show');},400);});
+  hz.addEventListener('click',()=>editor.toggle());
+  tg.addEventListener('click',()=>editor.toggle());
+})();
+</script>
+</body>
+</html>
