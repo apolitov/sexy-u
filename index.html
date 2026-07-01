@@ -640,37 +640,28 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
   <!-- ============ 14 · ПРИМЕР · Q3-БЭКЛОГ ============ -->
   <section class="slide">
     <div class="chrome"><span>// пример · спринт 138</span><span class="on">14 / 17</span></div>
-    <div class="pad" style="padding-top:112px">
-      <div class="kicker reveal">Пример на нашем Q3-бэклоге</div>
-      <h2 class="title reveal" style="font-size:64px">Как это ляжет на <span class="c">первый спринт</span></h2>
-      <div class="reveal d-a" style="margin-top:30px">
-        <div class="week-h" style="color:var(--cyan)">develop · 65% · V-TEAM на одну задачу</div>
-        <div class="grid2" style="gap:24px;margin-top:8px">
-          <div class="card" style="padding:24px 30px">
-            <div class="ico">V-TEAM A · fullstack · контент</div>
-            <h3 style="margin-top:8px;font-size:27px"><span class="chip cy" style="font-size:16px;padding:3px 10px;vertical-align:middle">USB-19166</span> Сизиф — продукты и SEO</h3>
-            <p style="margin-top:8px;font-size:21px">Контент-стрим: Сизиф + локализация сайта (USB-18093). В активной разработке.</p>
-          </div>
-          <div class="card" style="padding:24px 30px">
-            <div class="ico">V-TEAM B · backend</div>
-            <h3 style="margin-top:8px;font-size:27px"><span class="chip cy" style="font-size:16px;padding:3px 10px;vertical-align:middle">USB-18975</span> Form-Core 2.0 + техдолг</h3>
-            <p style="margin-top:8px;font-size:21px">Декомпозиция концепта Form-Core 2.0 + техдолг form-core (Kafka, OpenAPI, миграции, чистка форм).</p>
-          </div>
+    <div class="pad" style="padding-top:108px">
+      <div class="kicker reveal" style="color:var(--amber)">Пример · иллюстрация, не финальный план</div>
+      <h2 class="title reveal" style="font-size:60px">Как это ляжет на <span class="c">первый спринт</span></h2>
+      <p class="lead reveal" style="font-size:22px;margin-top:12px">Одна задача разработки на V-TEAM; аналитику, тесты и поддержку ведём вне планируемого капаситета. Источник — <a href="https://confluence.uralsib.ru/spaces/usbp/pages/403784905" style="color:var(--cyan);text-decoration:none">Q3-бэклог платформы</a>.</p>
+      <div class="grid3 reveal d-a" style="margin-top:26px;align-items:start">
+        <div class="card" style="padding:26px 28px">
+          <div class="ico" style="color:var(--cyan)">V-TEAM A · fullstack · 65+65</div>
+          <h3 style="margin-top:8px;font-size:25px"><span class="chip cy" style="font-size:15px;padding:3px 9px;vertical-align:middle">USB-19166</span> Сизиф. Продукты и SEO</h3>
+          <p style="margin-top:8px;font-size:20px">Активная разработка контент-стрима. Одна задача на спринт.</p>
+          <div style="margin-top:12px"><span class="chip">эпик 79 SP</span></div>
         </div>
-      </div>
-      <div class="reveal d-c" style="margin-top:24px">
-        <div class="week-h" style="color:var(--amber)">run · 35% &nbsp;·&nbsp; CRM + техдолг и поддержка</div>
-        <div class="grid2" style="gap:24px;margin-top:8px">
-          <div class="card" style="padding:24px 30px">
-            <div class="ico" style="color:var(--amber)">RUN</div>
-            <h3 style="margin-top:8px;font-size:27px"><span class="chip am" style="font-size:16px;padding:3px 10px;vertical-align:middle">USB-17604</span> CRM для ЗП-проектов</h3>
-            <p style="margin-top:8px;font-size:21px">Минорные доделки CRM + поддержка прода и рефакторинг (std-logger, нагрузочное).</p>
-          </div>
-          <div class="card" style="padding:24px 30px">
-            <div class="ico" style="color:var(--amber)">RUN · ТЕХДОЛГ ФРОНТА</div>
-            <h3 style="margin-top:8px;font-size:27px"><span class="chip am" style="font-size:16px;padding:3px 10px;vertical-align:middle">USB-22373</span> Обновление фронт-стека · 123 SP</h3>
-            <p style="margin-top:8px;font-size:20px">react-hook-form 7+, замена reshadow (SWC remaster), Next.js 14+, React 18+, Biome. Плюс фиксы: блокировка формы до загрузки JS, картинки, Safari, дубли форм.</p>
-          </div>
+        <div class="card" style="padding:26px 28px">
+          <div class="ico" style="color:var(--cyan)">V-TEAM B · backend · 65</div>
+          <h3 style="margin-top:8px;font-size:25px"><span class="chip cy" style="font-size:15px;padding:3px 9px;vertical-align:middle">USB-18975</span> Form-Core 2.0 — старт</h3>
+          <p style="margin-top:8px;font-size:20px">Эпик крупный (Анализ) — в первом спринте декомпозируем концепт + берём первые задачи.</p>
+          <div style="margin-top:12px"><span class="chip am">план ~250 SP</span></div>
+        </div>
+        <div class="card" style="padding:26px 28px">
+          <div class="ico" style="color:var(--amber)">RUN · план 40–45 SP</div>
+          <h3 style="margin-top:8px;font-size:25px"><span class="chip am" style="font-size:15px;padding:3px 9px;vertical-align:middle">USB-22373</span> Обновление фронт-стека</h3>
+          <p style="margin-top:8px;font-size:20px">Срез рефакторинга: react-hook-form 7+ (40 SP). Доделки CRM и баги — в поддержке, вне плана.</p>
+          <div style="margin-top:12px"><span class="chip">эпик 123 SP</span></div>
         </div>
       </div>
     </div>
