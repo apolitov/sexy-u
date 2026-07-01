@@ -257,6 +257,22 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
     <div class="brandfoot">платформа · процесс</div><div class="pageno">03</div>
   </section>
 
+  <!-- ============ УСЛОВИЯ ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// условия</span><span class="on">00 / 00</span></div>
+    <div class="pad">
+      <div class="kicker reveal">Честно на входе</div>
+      <h2 class="title reveal">Без чего процесс <span class="c">не работает</span></h2>
+      <p class="lead reveal">Это не автомат. Три условия должны выполняться одновременно — иначе ломается фокус и предсказуемость.</p>
+      <div class="grid3" style="margin-top:44px">
+        <div class="card reveal d-a"><div class="ico" style="color:var(--amber)">01</div><h3>Нормальная оценка</h3><p>Задачи оценены реалистично (часы по Фибоначчи). Заниженная оценка рвёт спринт.</p></div>
+        <div class="card reveal d-b"><div class="ico" style="color:var(--amber)">02</div><h3>Артефакты на старте</h3><p>DoR-Hard зелёный до спринта: цель, декомпозиция, спека, диаграмма. Нет — задача не входит.</p></div>
+        <div class="card reveal d-c"><div class="ico" style="color:var(--amber)">03</div><h3>Нет прерываний</h3><p>V-TEAM не дёргаем. Прерывания только P0/P1, остальное — в run.</p></div>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">00</div>
+  </section>
+
   <!-- ============ 4 · СТРУКТУРА ============ -->
   <section class="slide">
     <div class="chrome"><span>// структура</span><span class="on">04 / 17</span></div>
@@ -284,6 +300,22 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
       </div>
     </div>
     <div class="brandfoot">платформа · процесс</div><div class="pageno">04</div>
+  </section>
+
+  <!-- ============ РОЛИ ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// роли</span><span class="on">00 / 00</span></div>
+    <div class="pad">
+      <div class="kicker reveal">Кто за что отвечает</div>
+      <h2 class="title reveal"><span class="c">Роли</span> в процессе</h2>
+      <div class="grid2" style="margin-top:30px;align-items:start">
+        <div class="card reveal d-a"><div class="ico" style="color:var(--cyan)">CPO · ведёт develop</div><ul class="ulist" style="margin-top:12px;font-size:21px"><li>Бэклог и роадмап develop, триаж (направление, команда, размер).</li><li>Держит <b>DoR-Hard гейт</b> с тестлидом — без аппрува не в спринт.</li><li>Решает P2 и эскалации DoR-Soft.</li></ul></div>
+        <div class="card reveal d-b"><div class="ico" style="color:var(--amber)">CTO · ведёт run</div><ul class="ulist" style="margin-top:12px;font-size:21px"><li>Бэклог run и рефакторинг-роадмап, ведёт run-команду.</li><li>Валидирует архитектуру develop-задач на кик-офе.</li><li>P0 — мгновенно, P1 — с CPO. ИБ и DevOps.</li></ul></div>
+        <div class="card reveal d-c"><div class="ico" style="color:var(--cyan)">Тестлид</div><ul class="ulist" style="margin-top:12px;font-size:21px"><li>Второй голос на DoR-гейте (кворум 2 из 2).</li><li>Пишет регламент тестирования отдельным документом.</li></ul></div>
+        <div class="card reveal d-d"><div class="ico" style="color:var(--amber)">Мейнтейнер сервиса</div><ul class="ulist" style="margin-top:12px;font-size:21px"><li>Ведёт мелкие технические задачи develop.</li><li>Пишет архитектуру под надзором CTO.</li></ul></div>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">00</div>
   </section>
 
   <!-- ============ 5 · КАПАСИТИ ============ -->
@@ -314,6 +346,37 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
     <div class="brandfoot">платформа · процесс</div><div class="pageno">05</div>
   </section>
 
+  <!-- ============ КУДА ИДЁТ ЗАДАЧА ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// маршрутизация</span><span class="on">00 / 00</span></div>
+    <div class="pad" style="padding-top:112px">
+      <div class="kicker reveal">Как тегируем задачу</div>
+      <h2 class="title reveal" style="font-size:64px">Куда идёт задача: <span class="c">develop / run</span></h2>
+      <div class="grid2" style="margin-top:30px;align-items:start">
+        <div class="card reveal d-a">
+          <div class="ico" style="color:var(--cyan)">→ DEVELOP · новое и крупное</div>
+          <ul class="ulist" style="margin-top:12px;font-size:22px">
+            <li>Новый сервис.</li>
+            <li>Крупная фича <b>&gt;21 SP</b> в существующем сервисе.</li>
+            <li>RnD без коммита по срокам.</li>
+            <li>Рефакторинг внутри скоупа develop-задачи.</li>
+          </ul>
+        </div>
+        <div class="card reveal d-b">
+          <div class="ico" style="color:var(--amber)">→ RUN · текущее</div>
+          <ul class="ulist" style="margin-top:12px;font-size:22px">
+            <li>Доработка фичи <b>≤21 SP</b> без активной V-TEAM.</li>
+            <li>Баг прода.</li>
+            <li>Плановый рефакторинг, техдолг.</li>
+            <li>Небольшая доработка.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card reveal d-c" style="margin-top:22px;padding:18px 30px;border-color:#5a4a2a"><p style="font-size:21px"><b style="color:var(--amber)">Порог — 21 SP.</b> Тег ставит CPO на квартальном триаже. Не подошло ни одно условие → эскалация на CPO + CTO.</p></div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">00</div>
+  </section>
+
   <!-- ============ 6 · V-TEAM ============ -->
   <section class="slide">
     <div class="chrome"><span>// фокус</span><span class="on">06 / 17</span></div>
@@ -334,6 +397,21 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
       </div>
     </div>
     <div class="brandfoot">платформа · процесс</div><div class="pageno">06</div>
+  </section>
+
+  <!-- ============ ДВЕ ЗАДАЧИ ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// исключение</span><span class="on">00 / 00</span></div>
+    <div class="pad">
+      <div class="kicker reveal">Исключение из правила фокуса</div>
+      <h2 class="title reveal">Две задачи в <span class="c">одном спринте</span></h2>
+      <p class="lead reveal">V-TEAM = одна задача = весь спринт. Исключение — только когда задача очевидно маленькая.</p>
+      <div class="grid2" style="margin-top:34px;align-items:start">
+        <div class="card reveal d-a"><div class="ico" style="color:var(--cyan)">Когда можно</div><ul class="ulist" style="margin-top:12px;font-size:22px"><li>Обе прошли DoR-Hard до планинга.</li><li>Обе одной категории (fullstack или backend).</li><li>Суммарно ≤60 SP (буфер 5 SP на переключение).</li><li>Максимум 2 за спринт.</li></ul></div>
+        <div class="card reveal d-b"><div class="ico" style="color:var(--amber)">Как работаем</div><ul class="ulist" style="margin-top:12px;font-size:22px"><li>Сначала одна → ушла на тест → берём вторую. Не параллельно.</li><li>Первая зависла в багфиксе — вторую не начинаем.</li><li>Решает спринт-планинг (CPO + CTO + V-TEAM).</li></ul></div>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">00</div>
   </section>
 
   <!-- ============ 7 · РИТМ СПРИНТА ============ -->
@@ -427,33 +505,35 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
           <p style="margin-top:16px"><b style="color:var(--text)">Буфер:</b> всегда 3 задачи на разной стадии — в разработке, в финализации, в концепте. Страховка от срыва аналитики.</p>
         </div>
       </div>
+      <div class="card reveal d-c" style="margin-top:22px;padding:18px 30px;border-color:#1c2c3b"><p style="font-size:21px"><b style="color:var(--cyan)">Подготовка:</b> маленькая задача — 2 спринта (N подготовка → N+1 разработка), большая — 3 (N−1 концепт → N финализация → N+1 разработка). Детали схем — в регламенте.</p></div>
     </div>
     <div class="brandfoot">платформа · процесс</div><div class="pageno">09</div>
   </section>
 
-  <!-- ============ 10 · СХЕМЫ ПОДГОТОВКИ SA ============ -->
+  <!-- ============ ТЕСТИРОВАНИЕ ============ -->
   <section class="slide">
-    <div class="chrome"><span>// конвейер</span><span class="on">10 / 17</span></div>
-    <div class="pad" style="padding-top:112px">
-      <div class="kicker reveal">Схемы подготовки SA</div>
-      <h2 class="title reveal" style="font-size:64px">Маленькая — <span class="c">2 спринта</span>, большая — 3</h2>
-      <div class="reveal d-a" style="margin-top:34px">
-        <div class="week-h" style="color:var(--cyan)">Схема А · маленькая задача (≤32 SP анализа)</div>
-        <div class="grid2" style="gap:24px;margin-top:8px">
-          <div class="card" style="padding:24px 30px"><div class="ico">N · подготовка</div><p style="margin-top:8px">Кик-оф концепта, спецификация, диаграммы, согласования ИБ. Ср нед 2 — груминг + DoR-гейт (кик-оф V-TEAM совмещён).</p></div>
-          <div class="card" style="padding:24px 30px"><div class="ico">N+1 · разработка</div><p style="margin-top:8px">Задача в V-TEAM. SA в команде первые 3 дня + по запросу, добивает Soft.</p></div>
+    <div class="chrome"><span>// тестирование</span><span class="on">00 / 00</span></div>
+    <div class="pad">
+      <div class="kicker reveal">Тестирование</div>
+      <h2 class="title reveal">QA <span class="c">в потоке</span> спринта</h2>
+      <div class="grid2" style="margin-top:34px;align-items:start">
+        <div class="card reveal d-a">
+          <div class="ico" style="color:var(--cyan)">Окно QA по спринту</div>
+          <ul class="ulist" style="margin-top:12px;font-size:21px">
+            <li><b>Пн–Ср нед 1:</b> автотесты + регресс прошлого релиза.</li>
+            <li><b>С середины нед 1:</b> тест текущей задачи по мере готовности.</li>
+            <li><b>Чт нед 2:</b> передача в финальный тест.</li>
+            <li><b>Пт нед 2 – Пн:</b> регресс билда, поддержка релиза.</li>
+          </ul>
         </div>
-      </div>
-      <div class="reveal d-c" style="margin-top:26px">
-        <div class="week-h" style="color:var(--amber)">Схема Б · большая задача (&gt;32 SP анализа)</div>
-        <div class="grid3" style="gap:22px;margin-top:8px">
-          <div class="card" style="padding:22px 26px"><div class="ico">N−1 · концепт</div><p style="margin-top:8px">Первичная аналитика, концепт с CTO, старт ИБ, при кросс-команде — арх-ревью. Черновая постановка + уточнённая оценка.</p></div>
-          <div class="card" style="padding:22px 26px"><div class="ico">N · финализация</div><p style="margin-top:8px">Спецификация. Ср нед 1 — отдельный кик-оф V-TEAM. Финализация Soft, груминг + DoR-гейт.</p></div>
-          <div class="card" style="padding:22px 26px"><div class="ico">N+1 · разработка</div><p style="margin-top:8px">Задача в V-TEAM. SA первые 3 дня + по запросу.</p></div>
+        <div class="card reveal d-b">
+          <div class="ico" style="color:var(--amber)">Shift-left · QA в подготовке</div>
+          <p style="margin-top:12px;font-size:21px">До спринта QA на ревью спеки и DoR проверяет тестируемость, логирование, фича-флаги, диагностику. Тест-кейсы и чек-листы готовятся до кода.</p>
+          <p style="margin-top:12px;font-size:19px;color:var(--muted)">Детальный регламент тестирования — отдельным документом от тестлида.</p>
         </div>
       </div>
     </div>
-    <div class="brandfoot">платформа · процесс</div><div class="pageno">10</div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">00</div>
   </section>
 
   <!-- ============ 11 · ПРЕРЫВАНИЯ ============ -->
@@ -501,6 +581,29 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
     <div class="brandfoot">платформа · процесс</div><div class="pageno">12</div>
   </section>
 
+  <!-- ============ РИСКИ ============ -->
+  <section class="slide">
+    <div class="chrome"><span>// риски</span><span class="on">00 / 00</span></div>
+    <div class="pad" style="padding-top:112px">
+      <div class="kicker reveal">Слабые места</div>
+      <h2 class="title reveal" style="font-size:64px">Риски и <span class="c">защита</span></h2>
+      <div class="grid2" style="margin-top:26px;align-items:start">
+        <ul class="ulist reveal d-a" style="font-size:21px">
+          <li><b>SA-конвейер</b> (главный риск) → буфер из 3 задач на разных стадиях.</li>
+          <li><b>Дизайнер — один</b> → запас макетов на спринт + подмена смежниками.</li>
+          <li><b>FE-лид совмещает код и управление</b> → лимит управления ≤30%.</li>
+          <li><b>Ротация раз в 6 недель теряет контекст</b> → хэндовер 15 мин + доводка до релиза.</li>
+        </ul>
+        <ul class="ulist reveal d-b" style="font-size:21px">
+          <li><b>Внешний ресурс &lt;50%</b> → это консультация, не V-TEAM.</li>
+          <li><b>CPO — узкое место на DoR</b> → замена: гейт держит CTO.</li>
+          <li><b>Две fullstack сразу</b> оголяют фронт run → решает CPO + CTO на кик-офе.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">00</div>
+  </section>
+
   <!-- ============ 11 · ЧТО ПОЛУЧАЕМ ============ -->
   <section class="slide">
     <div class="chrome"><span>// результат</span><span class="on">13 / 17</span></div>
@@ -519,6 +622,19 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
       </table>
     </div>
     <div class="brandfoot">платформа · процесс</div><div class="pageno">13</div>
+  </section>
+
+  <!-- ============ РАЗДЕЛИТЕЛЬ Q3 ============ -->
+  <section class="slide">
+    <div class="glow"></div>
+    <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+    <div class="chrome"><span>// применение</span><span class="on">00 / 00</span></div>
+    <div class="pad" style="display:flex;flex-direction:column;justify-content:center">
+      <div class="kicker reveal">Часть 2 · предложение</div>
+      <h2 class="reveal" style="font-weight:700;font-size:104px;line-height:1.0;letter-spacing:-.025em;margin:18px 0 0">Как применяем<br>на <span class="c">Q3</span></h2>
+      <p class="reveal" style="margin-top:34px;font-family:var(--font-mono);font-size:24px;color:var(--muted)">Реальный бэклог · распределение по командам · вопросы. Открыто к обсуждению.</p>
+    </div>
+    <div class="brandfoot">платформа · процесс</div><div class="pageno">00</div>
   </section>
 
   <!-- ============ 14 · ПРИМЕР · Q3-БЭКЛОГ ============ -->
@@ -637,6 +753,7 @@ img,video,canvas,svg{max-width:100%;max-height:100%;}
         <span class="chip am" style="font-size:24px;padding:12px 22px">гейт DoR</span>
       </div>
       <p class="reveal" style="margin-top:46px;font-family:var(--font-mono);font-size:26px;color:var(--muted)">Одна задача на V-TEAM · ритм 2 недели · аналитика на входе. Вопросы?</p>
+      <p class="reveal" style="margin-top:18px;font-family:var(--font-mono);font-size:20px;color:var(--amber)">Работает только при: реальной оценке · артефактах на старте · без прерываний.</p>
       <p class="reveal" style="margin-top:30px;font-family:var(--font-mono);font-size:20px;color:var(--muted)">Полный регламент → <a href="https://confluence.uralsib.ru/pages/viewpage.action?pageId=388839149" style="color:var(--cyan);text-decoration:none">Платформа: целевой процесс работы команды</a></p>
     </div>
   </section>
@@ -659,7 +776,7 @@ class Deck{
   constructor(){
     this.slides=[...document.querySelectorAll('.slide')];
     this.i=0;this.stage=document.getElementById('deckStage');
-    this.buildDots();this.scale();this.keys();this.touch();this.wheel();
+    this.buildDots();this.number();this.scale();this.keys();this.touch();this.wheel();
     window.addEventListener('resize',()=>this.scale());
     this.show(0);
   }
@@ -668,6 +785,9 @@ class Deck{
   buildDots(){const d=document.getElementById('dots');
     this.slides.forEach((_,n)=>{const b=document.createElement('i');b.onclick=()=>this.show(n);d.appendChild(b);});
     this.dots=[...d.children];}
+  number(){const total=this.slides.length;this.slides.forEach((s,i)=>{
+    const po=s.querySelector('.pageno');if(po)po.textContent=String(i+1).padStart(2,'0');
+    const on=s.querySelector('.chrome .on');if(on&&/^\s*\d+\s*\/\s*\d+\s*$/.test(on.textContent))on.textContent=String(i+1).padStart(2,'0')+' / '+total;});}
   show(n){this.i=Math.max(0,Math.min(n,this.slides.length-1));
     this.slides.forEach((s,j)=>{s.classList.toggle('active',j===this.i);s.classList.toggle('visible',j===this.i);});
     this.dots.forEach((d,j)=>d.classList.toggle('on',j===this.i));}
